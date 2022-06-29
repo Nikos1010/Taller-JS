@@ -26,20 +26,24 @@ function limpiarHTML(resultado) {
 
 //Ejercicio Dos
 const resultadoDos = document.querySelector('#resultado2');
-const palabrasArray = ['Lenguaje', 'Programacion', 'CSS', 'HTML', 'JavaScript'];
-function invertirArray(array) {
-    const arrayInvertido = [];
-    const parrafo = document.createElement('p');
-    for (let i = array.length-1; i >= 0; i--) {
-        arrayInvertido.push(array[i]); 
-        const span = document.createElement('span');
-        span.innerHTML = `${array[i]} `;
-        parrafo.appendChild(span);
-    }
+const btnReverse = document.querySelector('#enviarRever');
+const parrafo = document.createElement('p');
+const palabrasArray = [];
+
+btnReverse.addEventListener('click', (e) => {
+    e.preventDefault();
+    const palabra = document.querySelector('#revers').value;
+    invertirArray(palabra);
+});
+
+function invertirArray(palabra) {
+    limpiarHTML(resultadoDos);
+    palabrasArray.push(palabra)
+    const arrayInvertido = [... palabrasArray];
+    arrayInvertido.reverse();
+    parrafo.innerText = arrayInvertido.join(' - ');
     resultadoDos.appendChild(parrafo);
-    return arrayInvertido;
 }
-const nuevoArray = invertirArray(palabrasArray);
 
 //Ejercicio Tres
 const btnEnviarDos = document.querySelector('#enviarDos');
@@ -53,6 +57,7 @@ btnEnviarDos.addEventListener('click', (e) => {
 
 function crearTable(borde, centro) {
     const tabla = document.querySelector('#tabla')
+    limpiarHTML(tabla);
     const tbody = document.createElement('tbody');
     for (let i = 0; i < 4; i++) {
         const tr = document.createElement('tr');
@@ -96,59 +101,49 @@ function cantidadNumeroImpares(inicio, fin) {
 
 //Ejercicio Cinco
 const resultadoCinco = document.querySelector('#resultado5');
-const arrayUno = [3,5,6,7,8];
-const arrayDos = [1,5,8,9,6,10];
+const arrayUno = [3,5,6,7,8,1,3,8];
+const arrayUniq = [...new Set(arrayUno)]
+const arrayDos = [1,5,3,9,7,10,6];
 
 const parrafoCinco = document.createElement('p');
-for (let i = 0; i < arrayUno.length; i++) {
-    for (let j = 0; j < arrayDos.length; j++) {
-        if(arrayUno[i] === arrayDos[j]){
-            const span = document.createElement('span');
-            span.innerText = `${arrayDos[j]} `;
-            parrafoCinco.appendChild(span);
-        }
-    } 
+for (const value of arrayUniq) {
+    if(arrayDos.indexOf(value) >= 0){
+        const span = document.createElement('span');
+        span.innerText = `${value} `;
+        parrafoCinco.appendChild(span);
+    }
 }
 resultadoCinco.appendChild(parrafoCinco);
 
 //Ejercicio Seis
 const btnEnviarSeis = document.querySelector('#enviarSeis');
 const resultadoSeis = document.querySelector('#resultado6');
+const categoria = {
+    "vestuario": 1.30,
+    "carnes": 1.10,
+    "aseo": 1.25,
+    "granos": 1.20,
+    "otro": 1.20
+}
 
 btnEnviarSeis.addEventListener('click', e => {
     e.preventDefault();
     const precioProducto = document.querySelector('#precioProducto').value;
     const selectOption = document.querySelector('#products').value;
-    calcular(precioProducto, selectOption)
+    calcular(precioProducto, selectOption);
 });
 
 function calcular(precio, incremento) {
     limpiarHTML(resultadoSeis);
     const parrafo = document.createElement('p');
-    switch (incremento) {
-        case 'vestuario':
-            parrafo.innerText = `Precio Original: ${precio}, Incremento del 30%: ${precio*1.30}.`;
-            break;
-        case 'carnes':
-            parrafo.innerText = `Precio Original: ${precio}, Incremento del 10%: ${precio * 1.10}.`;
-            break;
-        case 'aseo':
-            parrafo.innerText = `Precio Original: ${precio}, Incremento del 25%: ${precio * 1.25}.`;
-            break;
-        case 'granos':
-            parrafo.innerText = `Precio Original: ${precio}, Incremento del 15%: ${precio * 1.15}.`;
-            break;
-        case 'otro':
-            parrafo.innerText = `Precio Original: ${precio}, Incremento del 20%: ${precio * 1.20}.`;
-            break;
-
-        default:
-            parrafo.innerText = `Se debe llenar el fomulario.`;
-            break;
+    const categoriaIncr= categoria[incremento];
+    if(categoriaIncr){
+        parrafo.innerText = `Precio Original: ${precio}, Incremento del 30%: ${precio*categoriaIncr}.`;
+    } else {
+        parrafo.innerText = `Se debe llenar el fomulario.`;
     }
     resultadoSeis.appendChild(parrafo);
 }
-
 //Ejercicio Siete
 const btnEnviarSiete = document.querySelector('#enviarSiete');
 
